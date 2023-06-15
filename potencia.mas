@@ -1,0 +1,45 @@
+Potenciador,            Input                       / Pido al usuario la base
+                        Store BASE                  / Guardo la base en memoria
+                        Input                       / Pido al usuario el exponente
+                        Store EXPONENTE             / Guardo el exponente en memoria
+                        Jump InicioPotenciador      / Salto al potenciador
+
+InicioPotenciador,      Load EXPONENTE              / Cargo el exponente
+                        Skipcond 800                / Exponente es mayor a 0?
+                        Jump FinPotenciador         / > Si: Salto al final
+                        JnS Multiplicador           / > No: Multiplico
+                        Load EXPONENTE              / Cargo el exponente
+                        Subt UNO                    / Le resto 1
+                        Store EXPONENTE             / Guardo el nuevo exponente
+                        Jump InicioPotenciador      / Vuelvo al loop
+FinPotenciador,         Load RESULTADO              / Cargo el resultado
+                        Output                      / Muestro el resultado
+                        Halt                        / Termino el programa
+
+Multiplicador,          DEC 0                       / Inicializo el multiplicador
+                        Load RESULTADO              / Cargo el resultado previo
+                        Store FACTOR_1              / Guardo el resultado en el factor 1
+                        Clear                       / Limpio el registro
+                        Store RESULTADO             / Guardo 0 en el resultado
+                        Load BASE                   / Cargo la base
+                        Store FACTOR_2              / Guardo la base en el factor 2
+
+InicioMultiplicador,    Skipcond 800                / Factor 2 es mayor a 0?
+                        Jump FinMultiplicador       / > Si: Salto al final del multiplicador
+                        Load RESULTADO              / > No: Cargo el resultado
+                        Add FACTOR_1                / Sumo el factor 1 al resultado
+                        Store RESULTADO             / Guardo el resultado
+                        Load FACTOR_2               / Cargo el factor 2
+                        Subt UNO                    / Le resto 1
+                        Store FACTOR_2              / Guardo el nuevo factor 2
+                        Jump InicioMultiplicador    / Vuelvo al loop
+FinMultiplicador,       Load RESULTADO              / Cargo el resultado
+                        JumpI Multiplicador         / Salto indirecto al multiplicador
+
+/ Variables
+UNO,            DEC 1
+BASE,           DEC 0
+EXPONENTE,      DEC 0
+RESULTADO,      DEC 1                               / El resultado empieza en 1 por a^b = 1 (donde b == 0)
+FACTOR_1,       DEC 0
+FACTOR_2,       DEC 0
