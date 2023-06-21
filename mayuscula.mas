@@ -1,0 +1,57 @@
+InicioEscritura,        Input                       / Pido al usuario input
+                        Store LETRA 
+                        Jump Mayuscula			    / Llamo a la funcion de convertir a mayuscula
+
+ContinuarEscritura,		StoreI PUNTERO              / Guardo el input en la posicion de memoria del puntero
+                        Subt ARROBA                 / Resto la arroba
+                        Skipcond 400                / Compruebo si el registro es igual a 0 (estamos en arroba)
+                        Jump MoverPunteroEscritura  / > Si: Llamada a mover puntero
+                        Jump FinEscritura           / > No: Llamada a imprimir y finalizar el programa
+
+MoverPunteroEscritura,  Load PUNTERO                / Cargo el puntero
+                        ADD UNO                     / Muevo el puntero +1 a la derecha
+                        Store PUNTERO               / Guardo el puntero
+                        Jump InicioEscritura        / Vuelvo al inicio de escribir
+
+FinEscritura,           JnS Imprimir                / Llamo a imprimir
+                        Halt                        / Finalizo el programa
+
+Mayuscula,    			Subt HEX_PREVIA_a           / Restamos hex previo a "a"
+                        Skipcond 800				/ Es mayor a 0
+                        Jump MayusculaOriginal     	/ > Si: Letra es mayuscula
+                        Jump MayusculaConvertir     / > No: Letra es minuscula
+
+MayusculaOriginal,     	Load LETRA					
+						Jump ContinuarEscritura
+
+MayusculaConvertir,		Load LETRA
+						Subt SEPARACION
+                        Jump ContinuarEscritura
+
+Imprimir,               DEC 0                       / Inicializo el registro en 0
+                        Load ARRAY                  / Cargo el array
+                        Store PUNTERO               / Lo guardo en la posicion de memoria del puntero
+
+InicioImprimir,         LoadI PUNTERO               / Cargo el valor del array de la posicion del puntero
+                        Subt ARROBA                 / Resto la arroba
+                        Skipcond 400                / Compruebo si el registro es igual a 0 (estamos en arroba)
+                        Jump MoverPunteroImprimir   / > Si: Muevo el puntero a la siguiente posicion
+                        Jump FinImprimir            / > No: Salto al final del programa
+
+MoverPunteroImprimir,   LoadI PUNTERO               / Cargo el valor del array de la posicion del puntero
+                        Output                      / Imprimo el valor
+                        Load PUNTERO                / Cargo el puntero
+                        ADD UNO                     / Muevo el puntero +1 a la derecha
+                        Store PUNTERO               / Guardo el puntero
+                        Jump InicioImprimir         / Vuelvo al inicio de imprimir
+
+FinImprimir,            JumpI Imprimir              / Vuelve donde se llamo a imprimir
+
+
+ARROBA,         HEX 40  / Caracter @
+UNO,            DEC 1
+ARRAY,          HEX 50
+PUNTERO,        HEX 50
+LETRA,	        HEX 20
+HEX_PREVIA_a, 	HEX 60
+SEPARACION, 	DEC 32
